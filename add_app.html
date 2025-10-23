@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>إضافة تطبيق</title>
+  <script src="jquery-3.6.1.js"></script>
+</head>
+<body>
+  <nav>  <!-- شريط التنقل الرئيسي -->
+    <a href="home.html">الرئيسية</a>  <!-- روابط الصفحات -->
+    <a href="aboutus.html">من نحن</a>
+    <a href="apps.html">التطبيقات</a>
+    <a href="add_app.html">إضافة تطبيق</a>
+  </nav>
+  <h1 class="page-title">إضافة تطبيق</h1>
+
+  <form action="apps.html" id="add-form">
+    <label for="name">اسم التطبيق</label>
+    <input id="name" type="text" name="name" placeholder="اسم التطبيق" required>
+    <label for="company">الشركة المطوّرة</label>
+    <input id="company" type="text" name="company" placeholder="الشركة المصنعة" required>
+    <label for="website">الموقع الإلكتروني</label>
+    <input id="website" type="text" name="website" placeholder="الموقع الإلكتروني" required>
+    <label for="is_free">مجاني / مدفوع</label>
+    <select id="is_free" name="is_free">
+      <option value="1">مجاني</option>
+      <option value="2">مدفوع</option>
+      <option value="3">مجاني + مدفوع</option>
+      <option value="0" hidden selected></option>
+    </select>
+    <label for="catagory">التصنيف</label>
+    <select id="catagory" name="catagory">
+        <option value="1">E-commerce</option>
+        <option value="2">Education</option>
+        <option value="3">Finance</option>
+        <option value="4">Health</option>
+        <option value="5">Entertainment</option>
+        <option value="6">Social Media</option>
+        <option value="7">Travel</option>
+        <option value="8">Others</option>
+        <option value="0" hidden selected></option>
+      </select>
+    <input id="catagory-text" type="text" name="catagory-text" placeholder="ادخل التصنيف اذا لم يكن موجود" disabled>
+    <textarea id="description" name="description" placeholder="وصف التطبيق"></textarea>
+    <div>
+      <input id="ok" type="button" value="إرسال">
+      <input id="clear" type="button" value="مسح">
+      <input id="submit" type="submit" hidden>
+    </div>
+  </form>
+
+  <script>
+    $(document).ready(function() {
+      //check values pefore submitting
+      $("#ok").click(function(event) {
+        if($("is_free").val() == "0") {
+          alert("الرجاء إدخال مجاني / مدفوع");
+          return false;
+        }
+        if($("#catagory").val() == "0") {
+          alert("الرجاء إدخال التصنيف");
+          return false;
+        }
+        /// match website pattern, for example:
+        /// google.com, great-site.com, foo.bar.com (foo. is not matched but this format passes as true)
+        /// also: foo.bar-test.com etc..
+        var website = $("#website").val();
+        if(website !== "" && website.search(/\w+(\-\w+)?\.\w+$/) === -1) {
+            alert("الرجاء إدخال الموقع الإلكتروني بشكل صحيح");
+            return false;
+          }
+        console.log("submit");
+        $("#submit").click();
+      });
+
+      $("#clear").click(function(event) {
+        event.preventDefault();
+        $("#name").val("");
+        $("#company").val("");
+        $("#website").val("");
+        $("#is_free").val("1");
+        $("#catagory").val("1");
+        $("#description").val("");
+      });
+
+      $("#catagory").change(function(event) {
+        event.preventDefault();
+        var catagory = $("#catagory").val();
+        if (catagory == "8") {
+          $("#catagory-text").prop("disabled", false);
+        }
+        else {
+          $("#catagory-text").prop("disabled", true);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
